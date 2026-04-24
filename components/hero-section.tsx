@@ -9,22 +9,16 @@ import Link from "next/link"
 
 const heroImages = [
   {
-    src: "/hero-facility.png",
-    alt: "Chint Centre Building - Modern electrical equipment facility",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/199733d2-9a63-4cf7-b98f-aa5ef1680b04-2026-04-24.png-iQMtziReNyLHAyyr9ShuDhPmLgUV5a.jpeg",
+    alt: "CHINT Manufacturing Facility - Industrial complex with modern infrastructure",
     title: "POWERING UGANDA'S ELECTRICAL FUTURE",
     subtitle: "Smart energy solutions, certified distributors, and real-time product access.",
   },
   {
-    src: "/hero-power.png",
-    alt: "Chint Power Distribution Equipment",
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9edd5408-468c-4e4a-af84-bce34ebc9776-2026-04-24.png-Ro5RzO08UHHs9RzxhVdhq090LbHcQS.jpeg",
+    alt: "CHINT Centre - Modern building with dynamic lighting design",
     title: "RELIABLE POWER SOLUTIONS",
     subtitle: "Industrial grade systems built for performance and durability.",
-  },
-  {
-    src: "/hero-solar.png",
-    alt: "Chint Solar Solutions",
-    title: "CLEAN ENERGY FOR TOMORROW",
-    subtitle: "Advanced solar inverters and panels for a sustainable future.",
   },
 ]
 

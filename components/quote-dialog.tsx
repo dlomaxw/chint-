@@ -18,6 +18,8 @@ interface QuoteDialogProps {
 }
 
 export function QuoteDialog({ open, onOpenChange, productName, productModel, productPrice }: QuoteDialogProps) {
+  const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle")
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,19 +29,40 @@ export function QuoteDialog({ open, onOpenChange, productName, productModel, pro
     message: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Quote request:", { ...formData, productName, productModel, productPrice })
-    alert("Thank you! Your quote request has been submitted. We'll contact you shortly.")
-    onOpenChange(false)
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      quantity: "1",
-      message: "",
-    })
+    setStatus("saving")
+    setError("")
+
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, type: "quote", productName, productModel, productPrice }),
+      })
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || "Could not submit quote request.")
+      }
+
+      setStatus("success")
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        quantity: "1",
+        message: "",
+      })
+      setTimeout(() => {
+        onOpenChange(false)
+        setStatus("idle")
+      }, 1200)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not submit quote request.")
+      setStatus("error")
+    }
   }
 
   return (
@@ -182,12 +205,21 @@ export function QuoteDialog({ open, onOpenChange, productName, productModel, pro
             </Button>
             <Button 
               type="submit" 
+              disabled={status === "saving"}
               className="flex-1 h-14 bg-[#0B1C2C] hover:bg-[#1a2e44] text-white font-black rounded-xl shadow-xl shadow-[#0B1C2C]/10 transition-all group"
             >
               <Send className="mr-3 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              Submit Formal Quote
+              {status === "saving" ? "Submitting..." : "Submit Formal Quote"}
             </Button>
           </div>
+          {status === "success" && (
+            <p className="rounded-xl bg-emerald-50 p-4 text-sm font-bold text-emerald-700">
+              Quote request saved. The admin team can now review it in lead management.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="rounded-xl bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>
+          )}
         </form>
       </DialogContent>
     </Dialog>

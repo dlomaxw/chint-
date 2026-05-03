@@ -11,7 +11,7 @@ const trendingItems = [
   },
   {
     title: "Transformers",
-    image: "/chint-power-distribution.jpg",
+    image: "/chint-circuit-breakers-electrical-panel-equipment.jpg",
     description: "Power distribution transformers",
   },
   {

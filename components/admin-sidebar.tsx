@@ -45,51 +45,17 @@ const adminNav = [
   {
     title: "CRM",
     icon: Users,
-    href: "/admin/crm",
+    href: "/admin/crm/leads",
     items: [
       { title: "Leads", href: "/admin/crm/leads" },
-      { title: "Pipeline", href: "/admin/crm/pipeline" },
-      { title: "Customers", href: "/admin/crm/customers" },
     ],
   },
   {
     title: "Inventory",
     icon: Box,
-    href: "/admin/inventory",
+    href: "/admin/inventory/products",
     items: [
       { title: "Products", href: "/admin/inventory/products" },
-      { title: "Stock Levels", href: "/admin/inventory/stock" },
-      { title: "Categories", href: "/admin/inventory/categories" },
-    ],
-  },
-  {
-    title: "Finance",
-    icon: CreditCard,
-    href: "/admin/finance",
-    items: [
-      { title: "Revenue", href: "/admin/finance/revenue" },
-      { title: "Invoices", href: "/admin/finance/invoices" },
-      { title: "Margins", href: "/admin/finance/margins" },
-    ],
-  },
-  {
-    title: "Marketing",
-    icon: Megaphone,
-    href: "/admin/marketing",
-    items: [
-      { title: "Campaigns", href: "/admin/marketing/campaigns" },
-      { title: "Ads Performance", href: "/admin/marketing/ads" },
-      { title: "Newsletter", href: "/admin/marketing/newsletter" },
-    ],
-  },
-  {
-    title: "Operations",
-    icon: ShieldCheck,
-    href: "/admin/operations",
-    items: [
-      { title: "Dealers", href: "/admin/operations/dealers" },
-      { title: "Installers", href: "/admin/operations/installers" },
-      { title: "Activity Log", href: "/admin/operations/logs" },
     ],
   },
 ]
@@ -156,7 +122,7 @@ export function AdminSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild className="h-12 rounded-xl text-white/60 hover:bg-white/5 hover:text-white">
-                <Link href="/admin/settings">
+                <Link href="/admin">
                   <Settings className="h-5 w-5" />
                   <span className="font-semibold">Settings</span>
                 </Link>
@@ -169,9 +135,11 @@ export function AdminSidebar() {
       <SidebarFooter className="p-6 border-t border-white/5">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="h-12 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
-              <LogOut className="h-5 w-5" />
-              <span className="font-bold">Log Out</span>
+            <SidebarMenuButton asChild className="h-12 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+              <Link href="/login">
+                <LogOut className="h-5 w-5" />
+                <span className="font-bold">Log Out</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

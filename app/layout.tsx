@@ -4,6 +4,7 @@ import "./globals.css"
 import { Montserrat as V0_Font_Montserrat } from "next/font/google"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { AIAgent } from "@/components/ai-agent"
+import { ChintLoadingScreen } from "@/components/chint-loading-screen"
 
 const montserrat = V0_Font_Montserrat({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.variable}>
       <body className="font-sans antialiased">
+        <ChintLoadingScreen />
         {children}
         <WhatsAppFloat />
         <AIAgent />

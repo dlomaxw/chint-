@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { MapPin, Phone, Clock, ArrowRight } from "lucide-react"
-import Link from "next/link"
+import { MapPin, Phone, Clock, ArrowRight, Navigation, Route } from "lucide-react"
 
 const shops = [
   {
@@ -20,9 +19,13 @@ const shops = [
   }
 ]
 
+const primaryLocationQuery = "Plot 147-153, 6th Street Industrial Area, Kampala, Uganda"
+const primaryDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(primaryLocationQuery)}`
+const primaryMapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(primaryLocationQuery)}&z=17&output=embed`
+
 export function NearbyShops() {
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section id="nearby-dealers" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -59,9 +62,11 @@ export function NearbyShops() {
               ))}
             </div>
 
-            <Button className="bg-[#0B1C2C] hover:bg-[#1a2e44] text-white px-10 py-7 rounded-xl font-bold shadow-xl shadow-[#0B1C2C]/10">
-              View All Locations
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Button asChild className="bg-[#0B1C2C] hover:bg-[#1a2e44] text-white px-10 py-7 rounded-xl font-bold shadow-xl shadow-[#0B1C2C]/10">
+              <a href="https://www.google.com/maps/search/?api=1&query=Chint+Centre+Kampala+Uganda" target="_blank" rel="noreferrer">
+                View All Locations
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
             </Button>
           </motion.div>
 
@@ -71,33 +76,64 @@ export function NearbyShops() {
             viewport={{ once: true }}
             className="relative"
           >
-            {/* Mock Map Preview with Premium Styling */}
-            <div className="aspect-square bg-[#E5E7EB] rounded-3xl overflow-hidden relative shadow-2xl border-8 border-white">
-              <img 
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1000" 
-                className="w-full h-full object-cover grayscale opacity-50"
-                alt="Map Background"
+            <div className="relative aspect-square overflow-hidden rounded-3xl border-8 border-white bg-[#0B1C2C] shadow-2xl">
+              <iframe
+                title="Map to CHINT Centre Kampala, Plot 147-153, 6th Street Industrial Area"
+                src={primaryMapEmbedUrl}
+                className="h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
-              <div className="absolute inset-0 bg-[#0B1C2C]/10 mix-blend-multiply" />
-              
-              {/* Map Pins */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute top-1/3 left-1/2 -translate-x-1/2 p-3 bg-white rounded-full shadow-2xl"
-              >
-                <div className="bg-[#C8A96A] p-2 rounded-full">
-                  <MapPin className="h-6 w-6 text-white" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0B1C2C]/15 via-transparent to-[#C8A96A]/20" />
+
+              <div className="pointer-events-none absolute inset-6 [perspective:900px]">
+                <motion.div
+                  animate={{ rotateX: [58, 63, 58], rotateZ: [-2, 2, -2] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-x-8 bottom-[24%] h-36 rounded-[45%] border border-[#C8A96A]/40 bg-[#0B1C2C]/10 shadow-2xl [transform-style:preserve-3d]"
+                >
+                  <motion.div
+                    animate={{ x: ["-12%", "12%", "-12%"], opacity: [0.35, 1, 0.35] }}
+                    transition={{ duration: 2.3, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute left-[14%] top-1/2 h-2 w-[72%] -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-500 via-white to-[#C8A96A] shadow-lg shadow-[#C8A96A]/40"
+                  />
+                  <div className="absolute left-[14%] top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-blue-500 shadow-lg" />
+                  <motion.div
+                    animate={{ scale: [1, 1.16, 1], y: [0, -6, 0] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute right-[12%] top-1/2 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-2xl"
+                  >
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C8A96A]">
+                      <MapPin className="h-6 w-6 text-white" />
+                    </span>
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              <div className="absolute left-6 top-6 rounded-2xl border border-white/30 bg-white/90 p-4 shadow-xl backdrop-blur">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0B1C2C] text-white">
+                    <Route className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#C8A96A]">Real Map</p>
+                    <p className="text-sm font-bold text-[#0B1C2C]">Plot 147-153, 6th Street</p>
+                  </div>
                 </div>
-              </motion.div>
-              
-              <div className="absolute bottom-8 left-8 right-8 p-6 glass rounded-2xl">
-                <div className="flex justify-between items-center">
+              </div>
+
+              <div className="absolute bottom-8 left-8 right-8 rounded-2xl border border-white/30 bg-white/90 p-6 shadow-2xl backdrop-blur">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h5 className="font-bold text-[#0B1C2C]">CHINT Centre Kampala</h5>
                     <p className="text-xs text-[#0B1C2C]/60">Industrial Area, 6th Street</p>
                   </div>
-                  <Button size="sm" className="bg-[#C8A96A] text-[#0B1C2C] font-bold">Directions</Button>
+                  <Button asChild size="sm" className="bg-[#C8A96A] text-[#0B1C2C] font-bold hover:bg-[#0B1C2C] hover:text-white">
+                    <a href={primaryDirectionsUrl} target="_blank" rel="noreferrer">
+                      <Navigation className="mr-2 h-4 w-4" />
+                      Directions
+                    </a>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -3,17 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { Users, Package, TrendingUp, CreditCard, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react"
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  AreaChart,
-  Area
-} from "recharts"
 import { Button } from "@/components/ui/button"
 
 const kpiData = [
@@ -105,34 +94,19 @@ export default function AdminDashboard() {
             </div>
             <Button variant="outline" size="sm" className="rounded-lg">Download Report</Button>
           </CardHeader>
-          <div className="h-[350px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C8A96A" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#C8A96A" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
-                />
-                <Tooltip 
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                />
-                <Area type="monotone" dataKey="revenue" stroke="#C8A96A" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div className="flex h-[350px] w-full items-end gap-4 rounded-2xl bg-[#F8F9FB] p-6">
+            {chartData.map((item) => (
+              <div key={item.name} className="flex h-full flex-1 flex-col justify-end gap-3">
+                <div className="relative flex flex-1 items-end rounded-full bg-white">
+                  <div
+                    className="w-full rounded-full bg-gradient-to-t from-[#0B1C2C] to-[#C8A96A]"
+                    style={{ height: `${Math.max(22, item.revenue / 4)}%` }}
+                    title={`${item.name}: UGX ${item.revenue}M`}
+                  />
+                </div>
+                <span className="text-center text-xs font-bold text-[#0B1C2C]/45">{item.name}</span>
+              </div>
+            ))}
           </div>
         </Card>
 
@@ -141,29 +115,20 @@ export default function AdminDashboard() {
             <CardTitle className="text-xl font-bold text-[#0B1C2C]">Lead Funnel</CardTitle>
             <p className="text-sm text-[#0B1C2C]/40">Conversion by month</p>
           </CardHeader>
-          <div className="h-[350px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
-                  dy={10}
-                />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#94A3B8', fontSize: 12 }}
-                />
-                <Tooltip 
-                  cursor={{ fill: '#F8F9FB' }}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                />
-                <Bar dataKey="leads" fill="#0B1C2C" radius={[6, 6, 0, 0]} barSize={20} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="flex h-[350px] flex-col justify-between rounded-2xl bg-[#F8F9FB] p-6">
+            {chartData.map((item) => (
+              <div key={item.name} className="grid grid-cols-[2.5rem_1fr_3rem] items-center gap-3">
+                <span className="text-xs font-bold text-[#0B1C2C]/45">{item.name}</span>
+                <div className="h-3 overflow-hidden rounded-full bg-white">
+                  <div
+                    className="h-full rounded-full bg-[#0B1C2C]"
+                    style={{ width: `${Math.min(100, Math.max(12, item.leads / 10))}%` }}
+                    title={`${item.leads} leads`}
+                  />
+                </div>
+                <span className="text-right text-xs font-black text-[#0B1C2C]">{item.leads}</span>
+              </div>
+            ))}
           </div>
         </Card>
       </div>

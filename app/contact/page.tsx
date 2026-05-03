@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+import { useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,10 +10,50 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { MapPin, Phone, Mail, Clock, Send, ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
+import Link from "next/link"
 
 export default function ContactPage() {
+  const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle")
+  const [error, setError] = useState("")
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    topic: "",
+    message: "",
+  })
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    setStatus("saving")
+    setError("")
+
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          phone: formData.phone,
+          topic: formData.topic,
+          message: formData.message,
+        }),
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || "Could not submit inquiry.")
+      setStatus("success")
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", topic: "", message: "" })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not submit inquiry.")
+      setStatus("error")
+    }
+  }
+
   return (
-    <main className="min-h-screen bg-[#F8F9FB]">
+    <main className="min-h-screen overflow-x-hidden bg-[#F8F9FB]">
       <Header />
 
       {/* Hero Section */}
@@ -48,37 +90,39 @@ export default function ContactPage() {
               className="lg:col-span-7 bg-white p-10 rounded-3xl shadow-xl shadow-[#0B1C2C]/5 border border-[#0B1C2C]/5"
             >
               <h2 className="text-3xl font-black text-[#0B1C2C] mb-8">Send an Inquiry</h2>
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-[#0B1C2C] uppercase tracking-wider">First Name</label>
-                    <Input placeholder="John" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
+                    <Input required value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} placeholder="John" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-[#0B1C2C] uppercase tracking-wider">Last Name</label>
-                    <Input placeholder="Doe" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
+                    <Input required value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} placeholder="Doe" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-[#0B1C2C] uppercase tracking-wider">Email Address</label>
-                  <Input placeholder="john@company.com" type="email" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
+                  <Input required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="john@company.com" type="email" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-[#0B1C2C] uppercase tracking-wider">Phone Number</label>
-                  <Input placeholder="+256 ..." type="tel" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
+                  <Input required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="+256 ..." type="tel" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-[#0B1C2C] uppercase tracking-wider">Inquiry Topic</label>
-                  <Input placeholder="Project Consultation" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
+                  <Input required value={formData.topic} onChange={(e) => setFormData({ ...formData, topic: e.target.value })} placeholder="Project Consultation" className="bg-[#F8F9FB] border-none py-6 rounded-xl" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-[#0B1C2C] uppercase tracking-wider">Message Details</label>
-                  <Textarea placeholder="How can we help you today?" rows={6} className="bg-[#F8F9FB] border-none rounded-xl" />
+                  <Textarea required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder="How can we help you today?" rows={6} className="bg-[#F8F9FB] border-none rounded-xl" />
                 </div>
-                <Button size="lg" className="w-full bg-[#0B1C2C] hover:bg-[#1a2e44] text-white font-bold py-8 rounded-xl shadow-lg transition-all group">
+                <Button disabled={status === "saving"} size="lg" className="w-full bg-[#0B1C2C] hover:bg-[#1a2e44] text-white font-bold py-8 rounded-xl shadow-lg transition-all group">
                   <Send className="h-5 w-5 mr-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  Send Official Inquiry
+                  {status === "saving" ? "Sending..." : "Send Official Inquiry"}
                 </Button>
+                {status === "success" && <p className="rounded-xl bg-emerald-50 p-4 text-sm font-bold text-emerald-700">Inquiry saved. Our team can review it in admin lead management.</p>}
+                {status === "error" && <p className="rounded-xl bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>}
               </form>
             </motion.div>
 
@@ -114,9 +158,11 @@ export default function ContactPage() {
                 <div className="relative z-10">
                   <h3 className="text-2xl font-black mb-3">Find a Distributor</h3>
                   <p className="text-white/60 mb-6 font-medium">Locate our certified dealers and service hubs across the region.</p>
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white hover:text-[#0B1C2C] rounded-xl font-bold px-8">
-                    Open Store Locator
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                  <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white hover:text-[#0B1C2C] rounded-xl font-bold px-8">
+                    <Link href="/#nearby-dealers">
+                      Open Store Locator
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                   </Button>
                 </div>
                 <div className="absolute top-0 right-0 h-full w-32 bg-[#C8A96A] opacity-5 -skew-x-12 translate-x-16 group-hover:translate-x-10 transition-transform" />

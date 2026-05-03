@@ -8,6 +8,7 @@ import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
+import Link from "next/link"
 
 export default function ServicesPage() {
   const services = [
@@ -69,10 +70,12 @@ export default function ServicesPage() {
             >
               Enterprise-grade support and engineering services to maximize the performance of your electrical infrastructure.
             </motion.p>
-            <Button size="lg" className="bg-[#C8A96A] hover:bg-[#C8A96A]/90 text-[#0B1C2C] font-bold text-lg px-10 py-7 rounded-xl transition-all hover:scale-105 shadow-xl">
-              Connect with Experts
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/contact">
+              <Button size="lg" className="bg-[#C8A96A] hover:bg-[#C8A96A]/90 text-[#0B1C2C] font-bold text-lg px-10 py-7 rounded-xl transition-all hover:scale-105 shadow-xl">
+                Connect with Experts
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -142,10 +145,12 @@ export default function ServicesPage() {
                       ))}
                     </div>
                     
-                    <Button className="w-full bg-[#0B1C2C] hover:bg-[#1a2e44] text-white font-bold h-12 rounded-xl shadow-lg shadow-[#0B1C2C]/10 transition-all group/btn">
-                      Request Service
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
+                    <Link href="/contact" className="block">
+                      <Button className="w-full bg-[#0B1C2C] hover:bg-[#1a2e44] text-white font-bold h-12 rounded-xl shadow-lg shadow-[#0B1C2C]/10 transition-all group/btn">
+                        Request Service
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </motion.div>

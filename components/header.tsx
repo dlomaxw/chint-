@@ -39,7 +39,7 @@ export function Header() {
   ]
 
   return (
-    <header className="w-full relative z-50">
+    <header className="relative z-50 w-screen max-w-[100vw] overflow-x-hidden">
       {/* Top bar - Premium Utility Bar */}
       <div className="bg-[#050B14] text-white/50 py-2.5 px-4 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
@@ -53,7 +53,7 @@ export function Header() {
               <span>Enterprise Support: +256 392 266 552</span>
             </div>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="hidden sm:flex items-center gap-6">
             <div className="flex items-center gap-4 border-r border-white/10 pr-6">
               <Facebook className="h-3 w-3 hover:text-[#C8A96A] cursor-pointer transition-colors" />
               <Twitter className="h-3 w-3 hover:text-[#C8A96A] cursor-pointer transition-colors" />
@@ -68,8 +68,8 @@ export function Header() {
       </div>
 
       {/* Main Header - Brand Identity */}
-      <div className="bg-white py-6 px-4 sticky top-0 shadow-sm border-b border-[#0B1C2C]/5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-12">
+      <div className="sticky top-0 w-screen max-w-[100vw] bg-white px-4 py-4 shadow-sm border-b border-[#0B1C2C]/5 sm:py-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6 lg:gap-12">
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0 group">
             <Image
@@ -102,7 +102,7 @@ export function Header() {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center gap-4">
+          <div className="hidden items-center gap-4 sm:flex">
             <Link href="/login" className="hidden sm:block">
               <Button variant="ghost" className="rounded-xl text-[#0B1C2C] font-black uppercase text-[10px] tracking-widest hover:bg-[#F8F9FB] px-6 py-6 border border-[#0B1C2C]/5">
                 <User className="h-4 w-4 mr-2" />
@@ -110,10 +110,10 @@ export function Header() {
               </Button>
             </Link>
 
-            <Button className="bg-[#0B1C2C] hover:bg-[#1a2e44] text-white rounded-xl font-black uppercase text-[10px] tracking-widest px-8 py-6 shadow-xl shadow-[#0B1C2C]/20 transition-all active:scale-95 flex items-center">
-              <ShoppingCart className="h-4 w-4 mr-3" />
-              <span>Procurement Cart</span>
-              <div className="ml-3 bg-[#C8A96A] text-[#0B1C2C] h-5 w-5 rounded-full flex items-center justify-center text-[9px]">0</div>
+            <Button className="relative flex h-12 w-12 items-center rounded-xl bg-[#0B1C2C] px-0 py-0 text-white shadow-xl shadow-[#0B1C2C]/20 transition-all active:scale-95 hover:bg-[#1a2e44] sm:w-auto sm:px-8 sm:py-6 sm:font-black sm:uppercase sm:tracking-widest">
+              <ShoppingCart className="h-4 w-4 sm:mr-3" />
+              <span className="hidden text-[10px] sm:inline">Procurement Cart</span>
+              <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#C8A96A] text-[9px] font-black text-[#0B1C2C] sm:static sm:ml-3">0</div>
             </Button>
           </div>
         </div>
@@ -188,7 +188,7 @@ export function Header() {
       </nav>
 
       {/* Mobile Menu - Premium Experience */}
-      <div className="md:hidden bg-[#0B1C2C] py-3 px-4 flex items-center justify-between border-t border-white/5">
+      <div className="flex w-screen max-w-[100vw] items-center justify-between gap-3 overflow-hidden border-t border-white/5 bg-[#0B1C2C] px-4 py-3 md:hidden">
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" className="text-white h-12 rounded-xl bg-white/5 border border-white/10 px-6">
@@ -220,9 +220,6 @@ export function Header() {
             </div>
           </SheetContent>
         </Sheet>
-        <Link href="/products" className="text-[#C8A96A] text-[10px] font-black uppercase tracking-[0.2em] bg-white/5 py-3 px-5 rounded-xl border border-white/10">
-          Catalog
-        </Link>
       </div>
     </header>
   )

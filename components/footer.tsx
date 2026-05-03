@@ -5,8 +5,28 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 export function Footer() {
+  const [email, setEmail] = useState("")
+  const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle")
+
+  async function subscribe() {
+    if (!email.includes("@")) {
+      setStatus("error")
+      return
+    }
+
+    setStatus("saving")
+    const response = await fetch("/api/inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "newsletter", name: email, email, topic: "Newsletter subscription" }),
+    })
+    setStatus(response.ok ? "success" : "error")
+    if (response.ok) setEmail("")
+  }
+
   return (
     <footer className="bg-[#050B14] text-white pt-24 pb-12 relative overflow-hidden">
       {/* Decorative Brand Element */}
@@ -21,8 +41,13 @@ export function Footer() {
               Architecting the energy landscape of East Africa with high-precision industrial components, sustainable infrastructure, and intelligent power distribution ecosystems.
             </p>
             <div className="flex gap-4">
-              {[Facebook, Twitter, Linkedin, Youtube].map((Icon, idx) => (
-                <a key={idx} href="#" className="h-10 w-10 flex items-center justify-center bg-white/5 hover:bg-[#C8A96A] hover:text-[#0B1C2C] rounded-xl transition-all duration-300 group">
+              {[
+                { icon: Facebook, href: "https://www.facebook.com/chintglobal" },
+                { icon: Twitter, href: "https://twitter.com/CHINTGlobal" },
+                { icon: Linkedin, href: "https://www.linkedin.com/company/chint" },
+                { icon: Youtube, href: "https://www.youtube.com/@CHINTGlobal" },
+              ].map(({ icon: Icon, href }) => (
+                <a key={href} href={href} target="_blank" rel="noreferrer" className="h-10 w-10 flex items-center justify-center bg-white/5 hover:bg-[#C8A96A] hover:text-[#0B1C2C] rounded-xl transition-all duration-300 group">
                   <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
                 </a>
               ))}
@@ -59,11 +84,13 @@ export function Footer() {
               <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#C8A96A] mb-4">Strategic Updates</h4>
               <p className="text-xs text-white/40 mb-6 font-medium">Join our network for the latest in electrical engineering and power innovation.</p>
               <div className="flex gap-2">
-                <Input className="bg-white/5 border-white/10 focus:ring-[#C8A96A] rounded-xl h-12 text-sm" placeholder="Enterprise Email" />
-                <Button className="bg-[#C8A96A] hover:bg-[#C8A96A]/90 text-[#0B1C2C] rounded-xl h-12 px-6">
+                <Input value={email} onChange={(event) => setEmail(event.target.value)} type="email" className="bg-white/5 border-white/10 focus:ring-[#C8A96A] rounded-xl h-12 text-sm" placeholder="Enterprise Email" />
+                <Button onClick={subscribe} disabled={status === "saving"} className="bg-[#C8A96A] hover:bg-[#C8A96A]/90 text-[#0B1C2C] rounded-xl h-12 px-6">
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </div>
+              {status === "success" && <p className="mt-3 text-xs font-bold text-emerald-300">Subscribed successfully.</p>}
+              {status === "error" && <p className="mt-3 text-xs font-bold text-red-300">Enter a valid email and try again.</p>}
             </div>
             
             <div className="space-y-4">

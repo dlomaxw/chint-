@@ -8,3 +8,9 @@ node_modules
 .next/
 .env*.local
 .DS_Store
+
+# Local verification artifacts
+.chrome-*/
+dev-server*.log
+hero-*.png
+data/*.json

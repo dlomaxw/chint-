@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { UserCheck, Tool, ShieldCheck, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export function InstallerRegistration() {
   return (
@@ -73,12 +74,16 @@ export function InstallerRegistration() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-[#C8A96A] hover:bg-[#C8A96A]/90 text-[#0B1C2C] px-10 py-7 rounded-xl font-bold text-lg shadow-xl shadow-[#C8A96A]/10 transition-all hover:scale-105">
-                Register Now
-              </Button>
-              <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/5 px-10 py-7 rounded-xl font-bold text-lg">
-                Member Login
-              </Button>
+              <Link href="/contact" className="w-full sm:w-auto">
+                <Button className="w-full bg-[#C8A96A] hover:bg-[#C8A96A]/90 text-[#0B1C2C] px-10 py-7 rounded-xl font-bold text-lg shadow-xl shadow-[#C8A96A]/10 transition-all hover:scale-105">
+                  Register Now
+                </Button>
+              </Link>
+              <Link href="/login" className="w-full sm:w-auto">
+                <Button variant="outline" className="w-full bg-transparent border-white/20 text-white hover:bg-white/5 px-10 py-7 rounded-xl font-bold text-lg">
+                  Member Login
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>

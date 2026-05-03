@@ -26,7 +26,7 @@ const productCategories = [
   {
     title: "Power Distribution",
     description: "Transformers, switchgear, and power transmission equipment",
-    image: "/chint-power-distribution-equipment.jpg",
+    image: "/chint-circuit-breakers-electrical-panel-equipment.jpg",
     slug: "power-distribution",
     products: [
       { name: "Distribution Panel 12-Way", price: "UGX 180,000", model: "NDB-12", specs: "IP40 protection, DIN rail" },
